@@ -51,14 +51,30 @@ Adicionar em _[AndroidManifest.xml](android/app/src/main/AndroidManifest.xml)_ a
 Alterar o arquivo _[ViewController.swift](iOS/SimpleSFSafariViewController/ViewController.swift)_
 
 ```swift
-override func viewDidAppear(_ animated: Bool) {
-	let urlString = "https://hml-vonage.conexasaude.com.br/ionicRoom?name=Pac._GUILHERME_MIRANDA&sessionId=45da65d4a6s5d4a6sd54atoken=T1==askdçlkasçldkasçdlaksdçaaoiurweqoriewrewsdfsdf654sdf65sd4f6sd&doctor=false&docpass=false&external=true&plataforma=CONEXA&apikey=99999999"
-	if let url = URL(string: urlString) {
-		let vc = SFSafariViewController(url: url)
-		vc.delegate = self
-		present(vc, animated: true)
-	}
-}
+
+var safariVC = SFSafariViewController(url: URL(string: "https://hml-vonage.conexasaude.com.br/ionicRoom?name=Pac._GUILHERME_MIRANDA&sessionId=45da65d4a6s5d4a6sd54atoken=T1==askdçlkasçldkasçdlaksdçaaoiurweqoriewrewsdfsdf654sdf65sd4f6sd&doctor=false&docpass=false&external=true&plataforma=CONEXA&apikey=99999999")!)
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            addViewControllerAsChildViewController()
+        }
+                
+        func addViewControllerAsChildViewController() {
+            addChild(safariVC)
+            self.view.addSubview(safariVC.view)
+            safariVC.didMove(toParent: self)
+            self.setUpConstraints()
+        }
+        
+        func setUpConstraints() {
+            self.safariVC.view.translatesAutoresizingMaskIntoConstraints = false
+            self.safariVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+            self.safariVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+            self.safariVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
+            self.safariVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
+            
+        }
+	
 ```
 
 > A url é composta pela _api_key, session_id, token, nome do paciente, flag doctor, flag docpass, flag external e flag plataforma_.
